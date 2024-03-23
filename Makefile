@@ -1,2 +1,2 @@
 default:
-	cabal exec -- agda -c Main.agda
+	cabal exec -- agda -c app/Main.agda

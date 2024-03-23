@@ -1,0 +1,4 @@
+name: carta
+depend: standard-library
+include: src
+  app
