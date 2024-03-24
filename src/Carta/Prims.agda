@@ -9,8 +9,10 @@ open import Carta.Segment
 -- explicitly SVG
 {-# FOREIGN GHC import Diagrams.Backend.SVG #-}
 {-# FOREIGN GHC import Diagrams.Prelude #-}
+{-# FOREIGN GHC import Debug.Trace #-}
 
 postulate
+  HColour : Set
   HDiagram : Set
   HPoint : Set
   HSegment : Set
@@ -23,8 +25,13 @@ postulate
   hstraight : (a : HV2) → HSegment
   hbezier3 : (a b c : HV2) → HSegment
   htoPath : HLocated (List HSegment) → HPath
+  htoPathClosed : HLocated (List HSegment) → HPath
   hstroke : HPath → HDiagram
+  hlinecolour : HColour → HDiagram → HDiagram
+  hfillcolour : HColour → HDiagram → HDiagram
+  rgbacolour : (r g b a : ℝ) → HColour
 
+{-# COMPILE GHC HColour = type AlphaColour Double #-}
 {-# COMPILE GHC HV2 = type V2 Double #-}
 {-# COMPILE GHC HSegment = type Segment Closed V2 Double #-}
 {-# COMPILE GHC HLocated = type Located #-}
@@ -37,13 +44,20 @@ postulate
 {-# COMPILE GHC hstraight = straight #-}
 {-# COMPILE GHC hbezier3 = bezier3 #-}
 {-# COMPILE GHC htoPath = toPath #-}
+{-# COMPILE GHC htoPathClosed = Path . fmap (mapLoc closeTrail) . pathTrails . toPath #-}
 {-# COMPILE GHC hstroke = stroke #-}
+{-# COMPILE GHC hlinecolour = \ c d -> d # lcA c #-}
+{-# COMPILE GHC hfillcolour = \ c d -> d # fcA c #-}
+{-# COMPILE GHC rgbacolour = \ r g b a -> sRGB r g b `withOpacity` a #-}
 
 
 compile : Segment → HSegment
 compile (cub (cub a b c)) =
   hbezier3 (uncurry hv2 a) (uncurry hv2 b) (uncurry hv2 c)
 compile (lin (lin a)) = hstraight (uncurry hv2 a)
+
+compilesClosed : List Segment → HDiagram
+compilesClosed = hstroke ∘ htoPathClosed ∘ flip hat (hpoint2 0.0 0.0) ∘ mapl compile
 
 compiles : List Segment → HDiagram
 compiles = hstroke ∘ htoPath ∘ flip hat (hpoint2 0.0 0.0) ∘ mapl compile

@@ -1,7 +1,7 @@
 module Main where
 
 open import Agda.Builtin.IO using (IO)
-open import Function using (_∘_)
+open import Function using (_∘_; _$_)
 open import Data.Unit using (⊤)
 open import Carta.Prims
 open import Carta.Main
@@ -34,5 +34,7 @@ circle n =
 segments : List ℝ² → List Segment
 segments = map linear ∘ diffs
 
+red = rgbacolour 1.0 0.0 0.0 1.0
+
 main : IO ⊤
-main = mainWith (compiles (segments (circle 8)))
+main = mainWith (hfillcolour red $ compilesClosed (segments (circle 8)))
