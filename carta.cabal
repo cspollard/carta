@@ -33,11 +33,9 @@ executable carta
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
     build-depends:
-          base ^>=4.16.4.0
-        , Chart
+          base
         , diagrams-lib
         , diagrams-svg
-        , text
 
     hs-source-dirs:   ./Malonzo
     default-language: Haskell2010

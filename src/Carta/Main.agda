@@ -9,6 +9,6 @@ open import Carta.Prims
 {-# FOREIGN GHC import Diagrams.Backend.SVG.CmdLine #-}
 
 postulate
-  mainWith : Diagram SVG → IO ⊤
+  mainWith : HDiagram → IO ⊤
 
 {-# COMPILE GHC mainWith = mainWith #-}
