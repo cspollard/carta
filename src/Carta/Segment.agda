@@ -24,15 +24,26 @@ data Segment : Set where
   cub : Cubic → Segment
   lin : Linear → Segment
 
-linear : (m : ℝ²) → Segment
-linear m = lin (lin m)
+linear : (dxy : ℝ²) → Segment
+linear dxy = lin (lin dxy)
 
 bezier : (a b c : ℝ²) → Segment
 bezier a b c = cub (cub a b c)
 
-
 data Located (A : Set) : Set where
   loc : ℝ² → A → Located A
 
+Trail : Set
+Trail = List Segment
+
 Path : Set
-Path = List Segment
+Path = Located Trail
+
+record Attrs : Set where
+  constructor attrs
+
+Object : Set
+Object = Attrs × Path
+
+Diagram : Set
+Diagram = List Object
