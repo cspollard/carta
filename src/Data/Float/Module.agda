@@ -21,13 +21,13 @@ private
 ℝ-commutativeRing = record { isCommutativeRing = ℝ-isCommutativeRing }
 
 
-ℝ-isModule : Module ℝ-commutativeRing 0ℓ 0ℓ
-ℝ-isModule = TensorUnit.⟨module⟩
+ℝ-module : Module ℝ-commutativeRing 0ℓ 0ℓ
+ℝ-module = TensorUnit.⟨module⟩
 
-ℝⁿ-isModule : ℕ → Module ℝ-commutativeRing 0ℓ 0ℓ
-ℝⁿ-isModule ℕ.zero = Zero.⟨module⟩
-ℝⁿ-isModule (ℕ.suc ℕ.zero)  = ℝ-isModule
-ℝⁿ-isModule (ℕ.suc n) = DirectProduct.⟨module⟩ ℝ-isModule (ℝⁿ-isModule n) 
+ℝⁿ-module : ℕ → Module ℝ-commutativeRing 0ℓ 0ℓ
+ℝⁿ-module ℕ.zero = Zero.⟨module⟩
+ℝⁿ-module (ℕ.suc ℕ.zero)  = ℝ-module
+ℝⁿ-module (ℕ.suc n) = DirectProduct.⟨module⟩ ℝ-module (ℝⁿ-module n) 
 
 
 -- Can I prove that any isomorphism f : A → B, with B the carrier of some
@@ -39,5 +39,5 @@ module _ where
   open import Data.Product
   open import Data.Unit.Polymorphic
 
-  _ : Carrierᴹ (ℝⁿ-isModule 2)
+  _ : Carrierᴹ (ℝⁿ-module 2)
   _ = 1.0 , 2.0

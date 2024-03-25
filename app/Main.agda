@@ -5,7 +5,7 @@ open import Function using (_∘_; _$_)
 open import Data.Unit using (⊤)
 open import Carta.Prims
 open import Carta.Main
-open import Carta.Segment
+-- open import Carta.Segment
 open import Data.List using (List; applyUpTo; map; []; _∷_)
 open import Data.Float renaming (Float to ℝ)
 open import Data.Nat using (ℕ; suc)
@@ -32,7 +32,7 @@ circle n =
   in applyUpTo go (suc n)
 
 segments : List ℝ² → List Segment
-segments = map linear ∘ diffs
+segments = map lin ∘ diffs
 
 red = rgbacolour 1.0 0.0 0.0 1.0
 

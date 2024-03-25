@@ -1,10 +1,21 @@
 module Carta.Prims where
 
 open import Function using (_∘_; _$_; flip)
-open import Data.Product using (uncurry; _,_)
+open import Data.Product using (uncurry; _,_; _×_)
 open import Data.List using (List; foldl) renaming (map to mapl)
 open import Data.Float using () renaming (Float to ℝ)
-open import Carta.Segment
+open import Data.Float.Module
+open import Algebra.Module
+open import Level using (0ℓ)
+
+
+ℝ²-module : Module ℝ-commutativeRing 0ℓ 0ℓ
+ℝ²-module = ℝⁿ-module 2
+
+ℝ² : Set
+ℝ² = ℝ × ℝ
+
+open import Carta.Segment ℝ²-module public
 
 -- explicitly SVG
 {-# FOREIGN GHC import Diagrams.Backend.SVG #-}
@@ -52,9 +63,9 @@ postulate
 
 
 compile : Segment → HSegment
-compile (cub (cub a b c)) =
+compile (cub a b c) =
   hbezier3 (uncurry hv2 a) (uncurry hv2 b) (uncurry hv2 c)
-compile (lin (lin a)) = hstraight (uncurry hv2 a)
+compile (lin a) = hstraight (uncurry hv2 a)
 
 compilesClosed : List Segment → HDiagram
 compilesClosed = hstroke ∘ htoPathClosed ∘ flip hat (hpoint2 0.0 0.0) ∘ mapl compile
