@@ -29,9 +29,13 @@ private
 ℝⁿ-isModule (ℕ.suc ℕ.zero)  = ℝ-isModule
 ℝⁿ-isModule (ℕ.suc n) = DirectProduct.⟨module⟩ ℝ-isModule (ℝⁿ-isModule n) 
 
-open Module
+
+-- Can I prove that any isomorphism f : A → B, with B the carrier of some
+-- algebraic structure, defines a new algebraic structure with carrier A?
+
 
 module _ where
+  open Module
   open import Data.Product
   open import Data.Unit.Polymorphic
 
