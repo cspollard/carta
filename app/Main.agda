@@ -34,7 +34,5 @@ circle n =
 segments : List ℝ² → List Segment
 segments = map lin ∘ diffs
 
-red = rgbacolour 1.0 0.0 0.0 1.0
-
 main : IO ⊤
 main = mainWith (hfillcolour red $ compilesClosed (segments (circle 8)))

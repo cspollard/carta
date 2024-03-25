@@ -3,10 +3,11 @@ module Carta.Prims where
 open import Function using (_∘_; _$_; flip)
 open import Data.Product using (uncurry; _,_; _×_)
 open import Data.List using (List; foldl) renaming (map to mapl)
-open import Data.Float using () renaming (Float to ℝ)
+open import Data.Float using (_÷_) renaming (Float to ℝ; fromℕ to ℕ→ℝ)
 open import Data.Float.Module
 open import Algebra.Module
 open import Level using (0ℓ)
+open import Carta.Color
 
 
 ℝ²-module : Module ℝ-commutativeRing 0ℓ 0ℓ
@@ -61,6 +62,24 @@ postulate
 {-# COMPILE GHC hfillcolour = \ c d -> d # fcA c #-}
 {-# COMPILE GHC rgbacolour = \ r g b a -> sRGB r g b `withOpacity` a #-}
 
+
+open import Data.Fin
+private
+  finToFloat : ∀ {n} (i : Fin n) → ℝ
+  finToFloat {n} i = ℕ→ℝ (toℕ i) ÷ ℕ→ℝ n
+
+  toHRGBA : RGBA → HColour
+  toHRGBA (rgba r g b a) =
+    uncurryₙ 4 rgbacolour (map finToFloat 4 (r , g , b , a))
+    where
+      open import Data.Product.Nary.NonDependent
+      open import Data.Vec.Recursive
+
+fillColor : RGBA → HDiagram → HDiagram
+fillColor c = hfillcolour (toHRGBA c)
+
+lineColor : RGBA → HDiagram → HDiagram
+lineColor c = hlinecolour (toHRGBA c)
 
 compile : Segment → HSegment
 compile (cub a b c) =
