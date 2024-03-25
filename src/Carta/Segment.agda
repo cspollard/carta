@@ -1,59 +1,44 @@
-module Carta.Segment where
+open import Algebra using (CommutativeRing)
+open import Algebra.Module using (Module)
 
+module Carta.Segment
+  {r ℓr m ℓm}
+  {CR : CommutativeRing r ℓr}
+  (M : Module CR m ℓm)
+  where
+
+
+open import Level using (_⊔_)
+open import Data.Bool using (Bool)
 open import Data.List using (List)
-open import Data.Product using (_×_; _,_)
-open import Data.Float renaming (Float to ℝ)
-open import Data.Float.Module
-
-ℝ² : Set
-ℝ² = ℝ × ℝ
-
-r2 : (x y : ℝ) → ℝ²
-r2 x y = x , y
-
-diff : (a b : ℝ²) → ℝ²
-diff (ax , ay) (bx , by) = ax - bx , ay - by
+open import Data.Product using (_×_)
+open Module M renaming (Carrierᴹ to A)
+open CommutativeRing CR renaming (Carrier to S)
 
 
+data Segment : Set m where
+  cub : (a b c : A) → Segment
+  lin : (a : A) → Segment
 
-record Cubic : Set where
-  constructor cub
-  field
-    a b c : ℝ²
+scale : (r : S) (s : Segment) → Segment
+scale r (cub a b c) = cub (r *ₗ a) (r *ₗ b) (r *ₗ c)
+scale r (lin a) = lin (r *ₗ a)
 
-record Linear : Set where
-  constructor lin
-  field
-    a : ℝ²
-
-data Segment : Set where
-  cub : Cubic → Segment
-  lin : Linear → Segment
-
-linear : (dxy : ℝ²) → Segment
-linear dxy = lin (lin dxy)
-
-bezier : (a b c : ℝ²) → Segment
-bezier a b c = cub (cub a b c)
-
-data Located (A : Set) : Set where
-  loc : ℝ² → A → Located A
-
-scale : (r : ℝ) (x₀ : ℝ²) (s : Segment) → Segment
-scale r x₀ (cub (cub a b c)) = cub (cub {! (a - x₀)  !} {!   !} {!   !})
-scale r x₀ (lin x) = {!   !}
-
-Trail : Set
+Trail : Set m
 Trail = List Segment
 
-Path : Set
-Path = Located Trail
+record Object : Set m where
+  constructor obj
+  field
+    closed : Bool
+    trail : Trail
 
-record Attrs : Set where
-  constructor attrs
 
-Object : Set
-Object = Attrs × Path
+data Located {b} (B : Set b) : Set (b ⊔ m) where
+  loc : A → B → Located B
 
-Diagram : Set
-Diagram = List Object
+record Diagram {a} (Attrs : Set a) : Set (a ⊔ m) where
+  constructor diagram
+  field
+    objs : List (Attrs × (Located Object))
+
