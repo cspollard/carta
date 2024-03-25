@@ -2,7 +2,8 @@ module Carta.Segment where
 
 open import Data.List using (List)
 open import Data.Product using (_×_; _,_)
-open import Data.Float using (_+_; _*_; _-_) renaming (Float to ℝ)
+open import Data.Float renaming (Float to ℝ)
+open import Data.Float.Module
 
 ℝ² : Set
 ℝ² = ℝ × ℝ
@@ -12,6 +13,7 @@ r2 x y = x , y
 
 diff : (a b : ℝ²) → ℝ²
 diff (ax , ay) (bx , by) = ax - bx , ay - by
+
 
 
 record Cubic : Set where
