@@ -10,16 +10,20 @@ module Carta.Segment
 open import Level using (_⊔_)
 open import Data.Bool using (Bool)
 open import Data.List using (List)
-open import Data.Product using (_×_)
+open import Data.Product using (_×_; _,_)
+open import Data.Vec.Recursive using (_^_)
+
 open Module M renaming (Carrierᴹ to A)
 open CommutativeRing CR renaming (Carrier to S)
 
+open import Carta.Bezier M
+
 data Segment : Set m where
-  cub : (a b c : A) → Segment
-  lin : (a : A) → Segment
+  cub : A ^ 3 → Segment
+  lin : A ^ 1 → Segment
 
 scale : (r : S) (s : Segment) → Segment
-scale r (cub a b c) = cub (r *ₗ a) (r *ₗ b) (r *ₗ c)
+scale r (cub (a , b , c)) = cub (r *ₗ a , r *ₗ b , r *ₗ c)
 scale r (lin a) = lin (r *ₗ a)
 
 Trail : Set m
