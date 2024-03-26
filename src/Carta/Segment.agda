@@ -16,8 +16,6 @@ open import Data.Vec.Recursive using (_^_)
 open Module M renaming (Carrierᴹ to A)
 open CommutativeRing CR renaming (Carrier to S)
 
-open import Carta.Bezier M
-
 data Segment : Set m where
   cub : A ^ 3 → Segment
   lin : A ^ 1 → Segment
