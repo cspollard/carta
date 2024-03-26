@@ -5,11 +5,17 @@ open import Function using (_∘_; _$_)
 open import Data.Unit using (⊤)
 open import Carta.Prims
 open import Carta.Main
--- open import Carta.Segment
+open import Carta.Color using (opaque'; red)
 open import Data.List using (List; applyUpTo; map; []; _∷_)
 open import Data.Float renaming (Float to ℝ)
 open import Data.Nat using (ℕ; suc)
 open import Data.Product using (_,_)
+
+open import Algebra.Module using (Module)
+open Module ℝ²-module
+
+_-ᴹ_ : (a b : ℝ²) → ℝ²
+a -ᴹ b = a +ᴹ (-ᴹ b)
 
 
 π 2π : ℝ
@@ -19,10 +25,7 @@ open import Data.Product using (_,_)
 diffs : List ℝ² → List ℝ²
 diffs [] = []
 diffs (x ∷ []) = []
-diffs (x ∷ y ∷ xs) = mn y x ∷ diffs (y ∷ xs)
-  where
-    mn : (a b : ℝ²) → ℝ²
-    mn (ax , ay) (bx , by) = ax - bx , ay - by
+diffs (x ∷ y ∷ xs) = (y -ᴹ x) ∷ diffs (y ∷ xs)
 
 circle : ℕ → List ℝ²
 circle n =
@@ -35,4 +38,5 @@ segments : List ℝ² → List Segment
 segments = map lin ∘ diffs
 
 main : IO ⊤
-main = mainWith (hfillcolour red $ compilesClosed (segments (circle 8)))
+main =
+  mainWith (fillColor (opaque' red) $ compilesClosed (segments (circle 8)))
