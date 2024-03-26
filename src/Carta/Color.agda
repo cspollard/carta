@@ -38,30 +38,31 @@ blue = zero , zero , #255
 black = zero , zero , zero
 white = #255 , #255 , #255
 
--- module _ where
---   open import Relation.Binary.PropositionalEquality
---   open import Data.Product.Nary.NonDependent as N
---   open import Function using (_$′_)
+module _ where
+  open import Relation.Binary.PropositionalEquality
+  open import Data.Product.Nary.NonDependent as N
+  open import Function using (_$′_)
 
---   saturates : ∀ n {m} (x : Fin m) → plus (fromℕ n) x ≡ fromℕ n
---   saturates ℕ.zero x = refl
---   saturates (ℕ.suc n) x = cong suc (saturates n x)
+  saturates : ∀ n {m} (x : Fin m) → plus (fromℕ n) x ≡ fromℕ n
+  saturates ℕ.zero x = refl
+  saturates (ℕ.suc n) x = cong suc (saturates n x)
 
---   trunc : ∀ n {m} (x : Fin m) → Fin n
---   trunc = {!   !}
+  trunc : ∀ n {m} (x : Fin m) → Fin (ℕ.suc n)
+  trunc ℕ.zero x = zero
+  trunc (ℕ.suc n) zero = zero
+  trunc (ℕ.suc n) (suc x) = suc (trunc n x)
 
---   unit : ∀ n {m} (x : Fin m) → plus zero x ≡ trunc (ℕ.suc n) x
---   unit ℕ.zero zero = {!   !} -- refl
---   unit (ℕ.suc n) zero = {!   !} -- refl
---   unit (ℕ.suc n) (suc x) = {!   !} -- cong suc (unit n x)
+  zero-plus-unit : ∀ n {m} (x : Fin m) → plus zero x ≡ trunc (ℕ.suc n) x
+  zero-plus-unit ℕ.zero zero = refl
+  zero-plus-unit ℕ.zero (suc x) = refl
+  zero-plus-unit (ℕ.suc n) zero = refl
+  zero-plus-unit (ℕ.suc n) (suc x) = cong suc (zero-plus-unit n x)
 
---   testwhite : ∀ x → white + x ≡ white
---   testwhite x = fromEqualₙ 3 $′ map (saturates 255) 3 x
+  testwhite : ∀ x → white + x ≡ white
+  testwhite x = fromEqualₙ 3 $′ map (saturates 255) 3 x
 
---   testblack : ∀ (x : RGB) → black + x ≡ x
---   testblack x = fromEqualₙ 3 $′ map {! (unit 255)  !} {!   !} {!   !}
---     -- $′ N.zipWith
---     --   3
---     --   (λ k f y → f $′ y)
---     --   (unit 255 , unit 255 , unit 255)
---     --   x
+  -- BBBBBBBBBLLLLLLLLLAAAAAAAAAAAAHHHHHHHH
+  -- testblack : ∀ (x : RGB) → black + x ≡ x
+  -- testblack x =
+  --   let z = map {! λ y → unit 255 {256} y !} 3 x -- map (λ y → unit 255 {256} y)  3 x
+  --   in {!   !}

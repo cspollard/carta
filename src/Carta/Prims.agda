@@ -69,7 +69,7 @@ private
   finToFloat {n} i = ℕ→ℝ (toℕ i) ÷ ℕ→ℝ n
 
   toHRGBA : RGBA → HColour
-  toHRGBA (rgba r g b a) =
+  toHRGBA (r , g , b , a) =
     uncurryₙ 4 rgbacolour (map finToFloat 4 (r , g , b , a))
     where
       open import Data.Product.Nary.NonDependent
