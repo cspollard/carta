@@ -1,8 +1,9 @@
 module Carta.Prims where
 
+open import Data.Unit using (⊤)
 open import Function using (_∘_; _$_; flip)
 open import Data.Product using (uncurry; _,_; _×_)
-open import Data.List using (List; foldl) renaming (map to mapl)
+open import Data.List using (List; foldl; []; _∷_) renaming (map to mapl)
 open import Data.Float using (_÷_) renaming (Float to ℝ; fromℕ to ℕ→ℝ)
 open import Data.Float.Real
 open import Algebra.Module
@@ -91,3 +92,6 @@ compilesClosed = hstroke ∘ htoPathClosed ∘ flip hat (hpoint2 0.0 0.0) ∘ ma
 
 compiles : List Segment → HDiagram
 compiles = hstroke ∘ htoPath ∘ flip hat (hpoint2 0.0 0.0) ∘ mapl compile
+
+-- compile' : Diagram ⊤ → HDiagram
+-- compile' (diagram xs) = hstroke (htoPath (hat (mapl {!   !} xs) (hpoint2 0.0 0.0)))

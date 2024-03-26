@@ -33,12 +33,7 @@ record Object : Set m where
     closed : Bool
     trail : Trail
 
-
-data Located {b} (B : Set b) : Set (b ⊔ m) where
-  loc : A → B → Located B
-
 record Diagram {a} (Attrs : Set a) : Set (a ⊔ m) where
   constructor diagram
   field
-    objs : List (Attrs × (Located Object))
-
+    objs : List (Attrs × (A × Object))
