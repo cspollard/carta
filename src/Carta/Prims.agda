@@ -4,7 +4,7 @@ open import Function using (_∘_; _$_; flip)
 open import Data.Product using (uncurry; _,_; _×_)
 open import Data.List using (List; foldl) renaming (map to mapl)
 open import Data.Float using (_÷_) renaming (Float to ℝ; fromℕ to ℕ→ℝ)
-open import Data.Float.Module
+open import Data.Float.Real
 open import Algebra.Module
 open import Level using (0ℓ)
 open import Carta.Color

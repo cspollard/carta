@@ -1,4 +1,5 @@
 name: carta
 depend: standard-library
+  float-real
 include: src
   app
