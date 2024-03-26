@@ -7,14 +7,12 @@ module Carta.Segment
   (M : Module CR m ℓm)
   where
 
-
 open import Level using (_⊔_)
 open import Data.Bool using (Bool)
 open import Data.List using (List)
 open import Data.Product using (_×_)
 open Module M renaming (Carrierᴹ to A)
 open CommutativeRing CR renaming (Carrier to S)
-
 
 data Segment : Set m where
   cub : (a b c : A) → Segment
